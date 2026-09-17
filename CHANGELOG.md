@@ -8,6 +8,7 @@ Todas as mudanças relevantes deste projeto são registradas aqui. O formato seg
 
 - Documentação de contribuição, segurança e validação contínua.
 - Verificações automatizadas de lint, tipos e build no GitHub Actions.
+- Licença MIT.
 
 ### Changed
 

@@ -51,4 +51,4 @@ Leia [CONTRIBUTING.md](CONTRIBUTING.md) antes de propor alterações. Vulnerabil
 
 ## Licença
 
-Uma licença de código aberto ainda não foi definida pelos titulares do projeto. A visibilidade pública do repositório não concede licença de uso além dos direitos aplicáveis.
+Distribuído sob a [Licença MIT](LICENSE).
