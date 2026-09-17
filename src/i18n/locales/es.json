@@ -1,0 +1,46 @@
+{
+  "layout": {
+    "appName": "Botmaker Academy",
+    "dashboard": "Panel",
+    "settings": "Configuración",
+    "logout": "Salir"
+  },
+  "menu": {
+    "dashboard": "Home",
+    "settings": "Configuración",
+    "users": "Gestión de Usuarios",
+    "tracks": "Gestión de Rutas",
+    "reports": "Informes",
+    "translations": "Traducciones"
+  },
+  "reports": {
+    "title": "Informes de Progreso",
+    "subtitle": "Sigue la evolución de las rutas por empresa, perfil de socio y usuario."
+  },
+  "translations": {
+    "title": "Traducciones del Sistema",
+    "subtitle": "Administra los textos del LMS en múltiples idiomas.",
+    "addKey": "Agregar clave de traducción",
+    "key": "Clave",
+    "value": "Valor",
+    "save": "Guardar",
+    "revert": "Revertir",
+    "delete": "Eliminar",
+    "actions": "Acciones",
+    "searchPlaceholder": "Buscar por clave o valor...",
+    "loading": "Cargando...",
+    "empty": "No se encontraron traducciones.",
+    "newKey": "Nueva clave",
+    "newValue": "Nuevo valor"
+  },
+  "resources": {
+    "sourceLabel": "Origen del recurso",
+    "externalLink": "Enlace externo (descarga)",
+    "localUpload": "Carga local",
+    "chooseFile": "Elegir archivo",
+    "noFile": "Ningún archivo seleccionado",
+    "selectedFile": "Archivo seleccionado: {name}",
+    "uploadHint": "El enlace generado se usará para descarga; configura el almacenamiento definitivo en el backend si es necesario.",
+    "uploadPlaceholder": "Enlace generado por la carga"
+  }
+}

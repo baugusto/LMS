@@ -1,0 +1,280 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  PARTNER
+}
+
+enum ResourceType {
+  VIDEO
+  PDF
+  DOC
+  SLIDE
+  SHEET
+  IMAGE
+  LINK
+  QUIZ
+}
+
+enum EnrollmentStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum ProgressStatus {
+  NOT_VIEWED
+  VIEWED
+  COMPLETED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  firstName     String
+  lastName      String
+  email         String    @unique
+  passwordHash  String
+  whatsapp      String?
+  role          Role      @default(PARTNER)
+  preferredLocale String  @default("pt")
+  avatarUrl     String?
+  emailVerifiedAt DateTime?
+  emailVerificationToken String?
+  emailVerificationTokenExpiresAt DateTime?
+  tokenVersion  Int       @default(0)
+  companyId     String?
+  company       Company?  @relation(fields: [companyId], references: [id])
+  partnerLinks  UserPartnerProfile[]
+  enrollments   Enrollment[]
+  progresses    Progress[]
+  videoViewEvents VideoViewEvent[]
+  videoProgresses VideoProgress[]
+  quizAttempts   QuizAttempt[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Locale {
+  id          String        @id
+  label       String
+  enabled     Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  translations Translation[]
+}
+
+model Translation {
+  id        String   @id @default(cuid())
+  localeId  String
+  key       String
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  locale    Locale   @relation(fields: [localeId], references: [id])
+
+  @@unique([localeId, key])
+}
+
+model Company {
+  id       String @id @default(cuid())
+  name     String @unique
+  cnpj     String?
+  website  String?
+  logoUrl  String?
+  users    User[]
+}
+
+model PartnerProfile {
+  id          String                @id @default(cuid())
+  name        String                @unique
+  description String?
+  active      Boolean               @default(true)
+  users       UserPartnerProfile[]
+  learning    LearningPath[]
+  learningPathLinks LearningPathPartnerProfile[]
+}
+
+model UserPartnerProfile {
+  id               String         @id @default(cuid())
+  userId           String
+  partnerProfileId String
+  user             User           @relation(fields: [userId], references: [id])
+  partnerProfile   PartnerProfile @relation(fields: [partnerProfileId], references: [id])
+
+  @@unique([userId, partnerProfileId])
+}
+
+model LearningPath {
+  id               String         @id @default(cuid())
+  title            String
+  description      String?
+  partnerProfileId String
+  partnerProfile   PartnerProfile @relation(fields: [partnerProfileId], references: [id])
+  active           Boolean        @default(true)
+  order            Int            @default(0)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @default(now()) @updatedAt
+  topics           Topic[]
+  enrollments      Enrollment[]
+  partnerProfiles  LearningPathPartnerProfile[]
+  videoProgresses  VideoProgress[]
+  quizAttempts     QuizAttempt[]
+}
+
+model Topic {
+  id             String   @id @default(cuid())
+  learningPathId String
+  title          String
+  description    String?
+  order          Int      @default(0)
+  learningPath   LearningPath @relation(fields: [learningPathId], references: [id])
+  resources      Resource[]
+}
+
+model LearningPathPartnerProfile {
+  id               String         @id @default(cuid())
+  learningPathId   String
+  partnerProfileId String
+
+  learningPath     LearningPath   @relation(fields: [learningPathId], references: [id])
+  partnerProfile   PartnerProfile @relation(fields: [partnerProfileId], references: [id])
+
+  @@unique([learningPathId, partnerProfileId])
+}
+
+model Resource {
+  id              String        @id @default(cuid())
+  topicId         String
+  type            ResourceType
+  title           String
+  description     String
+  url             String
+  durationMinutes Int?
+  topic           Topic         @relation(fields: [topicId], references: [id])
+  progresses      Progress[]
+  videoProgresses VideoProgress[]
+  quiz            Quiz?
+}
+
+model Enrollment {
+  id             String           @id @default(cuid())
+  userId         String
+  learningPathId String
+  status         EnrollmentStatus @default(NOT_STARTED)
+  startedAt      DateTime?
+  completedAt    DateTime?
+  user           User             @relation(fields: [userId], references: [id])
+  learningPath   LearningPath     @relation(fields: [learningPathId], references: [id])
+
+  @@unique([userId, learningPathId])
+}
+
+model Progress {
+  id           String         @id @default(cuid())
+  userId       String
+  resourceId   String
+  status       ProgressStatus @default(NOT_VIEWED)
+  lastViewedAt DateTime?
+  completedAt  DateTime?
+  user         User           @relation(fields: [userId], references: [id])
+  resource     Resource       @relation(fields: [resourceId], references: [id])
+
+  @@unique([userId, resourceId])
+}
+
+model VideoViewEvent {
+  id        String   @id @default(cuid())
+  userId    String
+  trackId   String
+  lessonId  String
+  eventType String   // play, pause, progress, ended, error
+  position  Int      // segundos
+  duration  Int?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model VideoProgress {
+  id               String   @id @default(cuid())
+  userId           String
+  learningPathId   String
+  resourceId       String
+  currentTimeSec   Int      @default(0)
+  durationSec      Int?
+  maxPercentViewed Int      @default(0)
+  completed        Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user         User         @relation(fields: [userId], references: [id])
+  learningPath LearningPath @relation(fields: [learningPathId], references: [id])
+  resource     Resource     @relation(fields: [resourceId], references: [id])
+
+  @@unique([userId, resourceId])
+}
+
+enum QuizQuestionType {
+  SHORT_TEXT
+  LONG_TEXT
+  MULTIPLE_CHOICE
+  SINGLE_CHOICE
+}
+
+model Quiz {
+  id         String         @id @default(cuid())
+  resourceId String         @unique
+  resource   Resource       @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  questions  QuizQuestion[]
+  attempts   QuizAttempt[]
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+}
+
+model QuizQuestion {
+  id                String           @id @default(cuid())
+  quizId            String
+  quiz              Quiz             @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  order             Int
+  prompt            String
+  type              QuizQuestionType
+  correctTextAnswer String?
+  options           QuizOption[]
+}
+
+model QuizOption {
+  id         String       @id @default(cuid())
+  questionId String
+  question   QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  order      Int
+  text       String
+  isCorrect  Boolean      @default(false)
+}
+
+model QuizAttempt {
+  id             String   @id @default(cuid())
+  userId         String
+  quizId         String
+  learningPathId String
+  score          Int
+  percent        Int
+  totalQuestions Int
+  correctAnswers Int
+  submittedAt    DateTime @default(now())
+  final          Boolean  @default(true)
+  answers        Json
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quiz         Quiz         @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  learningPath LearningPath @relation(fields: [learningPathId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, quizId])
+}

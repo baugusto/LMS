@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botmaker Academy - Editar Trilha</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #111820;
+            --bg-tertiary: #161f2a;
+
+            --accent-primary: #3b82f6;
+            --accent-secondary: #60a5fa;
+
+            --accent-02: rgba(59, 130, 246, 0.02);
+            --accent-03: rgba(59, 130, 246, 0.03);
+            --accent-05: rgba(59, 130, 246, 0.05);
+            --accent-08: rgba(59, 130, 246, 0.08);
+            --accent-10: rgba(59, 130, 246, 0.1);
+            --accent-12: rgba(59, 130, 246, 0.12);
+            --accent-15: rgba(59, 130, 246, 0.15);
+            --accent-20: rgba(59, 130, 246, 0.2);
+            --accent-35: rgba(59, 130, 246, 0.35);
+            --accent-40: rgba(59, 130, 246, 0.4);
+
+            --border-color: var(--accent-12);
+            --border-glow: rgba(59, 130, 246, 0.3);
+            --accent-glow: rgba(59, 130, 246, 0.25);
+
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+
+            --success-15: rgba(34, 197, 94, 0.15);
+            --warning-15: rgba(245, 158, 11, 0.15);
+            --danger-15: rgba(239, 68, 68, 0.15);
+            --muted-15: rgba(100, 116, 139, 0.15);
+
+            --white: #ffffff;
+            --white-05: rgba(255, 255, 255, 0.05);
+            --white-20: rgba(255, 255, 255, 0.2);
+
+            --shadow-30: rgba(0, 0, 0, 0.3);
+            --shadow-40: rgba(0, 0, 0, 0.4);
+            --shadow-50: rgba(0, 0, 0, 0.5);
+
+            --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --gradient-card: linear-gradient(145deg, rgba(17, 24, 32, 0.95) 0%, rgba(10, 14, 20, 0.98) 100%);
+            --gradient-accent-soft: linear-gradient(145deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%);
+            --gradient-accent-weak: linear-gradient(145deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+            --gradient-brand-panel: linear-gradient(145deg, rgba(59, 130, 246, 0.1) 0%, rgba(10, 14, 20, 0.95) 100%);
+            --gradient-shine: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse 80% 50% at 20% 40%, var(--accent-12) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 60%, var(--accent-08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--gradient-card);
+            border-right: 1px solid var(--border-color);
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            backdrop-filter: blur(20px);
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar .logo {
+            padding: 0 12px;
+            margin-bottom: 32px;
+        }
+
+        .logo-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--gradient-blue);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 12px 32px var(--accent-40);
+        }
+
+        .logo-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: var(--white);
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+            text-decoration: none;
+            color: var(--text-secondary);
+        }
+
+        .nav-item:hover {
+            background: var(--accent-08);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: var(--accent-15);
+            color: var(--accent-secondary);
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            opacity: 0.7;
+        }
+
+        .nav-item.active .nav-icon {
+            opacity: 1;
+        }
+
+        .nav-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .partner-card {
+            margin-top: auto;
+            background: var(--gradient-accent-soft);
+            border: 1px solid var(--accent-20);
+            border-radius: 16px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .partner-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, var(--accent-20) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .partner-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            position: relative;
+        }
+
+        .partner-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .btn-partner {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: var(--gradient-blue);
+            border: none;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px var(--border-glow);
+            position: relative;
+        }
+
+        .btn-partner:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--accent-40);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 24px 32px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+        }
+
+        /* Header */
+        .header {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .breadcrumb a {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--accent-secondary);
+        }
+
+        .breadcrumb span {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb .current {
+            color: var(--text-secondary);
+        }
+
+        .header-left h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--border-glow);
+            color: var(--text-primary);
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: var(--gradient-blue);
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px var(--border-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-shine);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px var(--accent-40);
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        /* Left Column */
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: var(--gradient-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+        }
+
+        .form-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .form-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* Toggle Switch */
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+        }
+
+        .toggle-label {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .toggle-switch {
+            width: 48px;
+            height: 24px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--accent-primary);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 16px;
+            height: 16px;
+            background: var(--white);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(24px);
+        }
+
+        /* Resources Section */
+        .resources-section {
+            background: var(--gradient-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+        }
+
+        .resources-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .resources-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .resources-tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-secondary);
+            padding: 4px;
+            border-radius: 12px;
+        }
+
+        .resources-tab {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .resources-tab.active {
+            background: var(--accent-primary);
+            color: var(--white);
+        }
+
+        .btn-add-resource {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--accent-10);
+            border: 1px dashed var(--accent-primary);
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-add-resource:hover {
+            background: var(--accent-15);
+        }
+
+        /* Resource Item */
+        .resource-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .resource-item:hover {
+            border-color: var(--border-glow);
+            background: var(--bg-tertiary);
+        }
+
+        .resource-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .resource-checkbox.checked {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .resource-checkbox svg {
+            width: 12px;
+            height: 12px;
+            color: var(--white);
+            opacity: 0;
+        }
+
+        .resource-checkbox.checked svg {
+            opacity: 1;
+        }
+
+        .resource-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--accent-10);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .resource-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--accent-secondary);
+        }
+
+        .resource-icon.pdf {
+            background: var(--danger-15);
+        }
+
+        .resource-icon.pdf svg {
+            color: var(--danger);
+        }
+
+        .resource-icon.video {
+            background: var(--warning-15);
+        }
+
+        .resource-icon.video svg {
+            color: var(--warning);
+        }
+
+        .resource-icon.doc {
+            background: var(--accent-10);
+        }
+
+        .resource-info {
+            flex: 1;
+        }
+
+        .resource-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .resource-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .resource-duration {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--text-muted);
+            background: var(--bg-tertiary);
+            padding: 4px 12px;
+            border-radius: 8px;
+        }
+
+        .resource-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        /* Right Column */
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Profile Selection */
+        .profile-card {
+            background: var(--gradient-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .profile-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .profile-options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .profile-option {
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .profile-option:hover {
+            border-color: var(--border-glow);
+            color: var(--text-primary);
+        }
+
+        .profile-option.active {
+            background: var(--accent-15);
+            border-color: var(--accent-primary);
+            color: var(--accent-secondary);
+        }
+
+        /* Notes Card */
+        .notes-card {
+            background: var(--gradient-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+            flex: 1;
+        }
+
+        .notes-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .notes-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .notes-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 16px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--text-primary);
+            resize: vertical;
+            outline: none;
+            transition: all 0.3s ease;
+            margin-bottom: 16px;
+        }
+
+        .notes-textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .notes-textarea:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .btn-save-notes {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent-10);
+            border: 1px solid var(--accent-primary);
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-save-notes:hover {
+            background: var(--accent-20);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <span class="logo-text">Botmaker Academy</span>
+            </div>
+
+            <nav class="nav-section">
+                <div class="nav-label">Menu</div>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1"/>
+                        <rect x="14" y="3" width="7" height="7" rx="1"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1"/>
+                        <rect x="14" y="14" width="7" height="7" rx="1"/>
+                    </svg>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    </svg>
+                    <span class="nav-text">Gestão de Trilhas</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                    </svg>
+                    <span class="nav-text">Gestão de Usuários</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    </svg>
+                    <span class="nav-text">Empresas</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                    <span class="nav-text">Relatórios</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                    </svg>
+                    <span class="nav-text">Traduções</span>
+                </a>
+            </nav>
+
+            <div class="partner-card">
+                <h4 class="partner-title">Programa de Parcerias</h4>
+                <p class="partner-desc">Acesse materiais exclusivos para ISV, VAR, Referral e Ambassador.</p>
+                <button class="btn-partner">Ver detalhes</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <div class="breadcrumb">
+                        <a href="#">Gestão de Trilhas</a>
+                        <span>›</span>
+                        <span class="current">Editar Trilha</span>
+                    </div>
+                    <h1>Editar Trilha</h1>
+                </div>
+
+                <div class="header-right">
+                    <button class="btn-secondary">Descartar mudanças</button>
+                    <button class="btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                            <polyline points="17 21 17 13 7 13 7 21"/>
+                            <polyline points="7 3 7 8 15 8"/>
+                        </svg>
+                        Salvar alterações
+                    </button>
+                </div>
+            </header>
+
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Form Card -->
+                <div class="form-card">
+                    <div class="form-card-header">
+                        <h3 class="form-card-title">Nome de trilha</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Nome da Trilha</label>
+                        <input type="text" class="form-input" value="Onboarding ISV / SI">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Perfis de Usuários</label>
+                            <div class="toggle-group">
+                                <span class="toggle-label">ISVs/SIs</span>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Perfis de Parceiro</label>
+                            <div class="toggle-group">
+                                <span class="toggle-label">Botmakers</span>
+                                <div class="toggle-switch"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resources Section -->
+                <div class="resources-section">
+                    <div class="resources-header">
+                        <h3 class="resources-title">Anotações</h3>
+                        <div class="resources-tabs">
+                            <div class="resources-tab active">Seções</div>
+                            <div class="resources-tab">Disponibilizar</div>
+                        </div>
+                    </div>
+
+                    <div class="resource-item">
+                        <div class="resource-checkbox checked">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <div class="resource-icon pdf">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                        </div>
+                        <div class="resource-info">
+                            <div class="resource-name">Apresentação de Onboarding.pdf</div>
+                            <div class="resource-meta">Upload 3 recursos</div>
+                        </div>
+                        <div class="resource-duration">351 kb</div>
+                        <div class="resource-status"></div>
+                    </div>
+
+                    <div class="resource-item">
+                        <div class="resource-checkbox checked">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <div class="resource-icon doc">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                            </svg>
+                        </div>
+                        <div class="resource-info">
+                            <div class="resource-name">Guia Rápido do Botmaker.docx</div>
+                            <div class="resource-meta">Arquivos: 1 recursos</div>
+                        </div>
+                        <div class="resource-duration">301 kb</div>
+                        <div class="resource-status"></div>
+                    </div>
+
+                    <div class="resource-item">
+                        <div class="resource-checkbox">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+                        <div class="resource-icon video">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="23 7 16 12 23 17 23 7"/>
+                                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                            </svg>
+                        </div>
+                        <div class="resource-info">
+                            <div class="resource-name">Oficinas de Config. vaste telefono</div>
+                            <div class="resource-meta">Baseado 3 recursos</div>
+                        </div>
+                        <div class="resource-duration">501 kb</div>
+                        <div class="resource-status"></div>
+                    </div>
+
+                    <button class="btn-add-resource">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Adicionar recurso
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Profile Selection -->
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <h3 class="profile-title">Perfis de Usuários</h3>
+                    </div>
+                    <div class="profile-options">
+                        <div class="profile-option active">ISVs/SIs</div>
+                        <div class="profile-option">Botmakers</div>
+                    </div>
+                </div>
+
+                <!-- Notes Card -->
+                <div class="notes-card">
+                    <div class="notes-header">
+                        <h3 class="notes-title">Anotações</h3>
+                    </div>
+                    <textarea class="notes-textarea" placeholder="+ Adicione suas anotações aqui..."></textarea>
+                    <button class="btn-save-notes">Salvar anotações</button>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

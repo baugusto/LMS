@@ -1,0 +1,46 @@
+{
+  "layout": {
+    "appName": "Botmaker Academy",
+    "dashboard": "Dashboard",
+    "settings": "Configurações",
+    "logout": "Sair"
+  },
+  "menu": {
+    "dashboard": "Home",
+    "settings": "Configurações",
+    "users": "Gestão de Usuários",
+    "tracks": "Gestão de Trilhas",
+    "reports": "Relatórios",
+    "translations": "Traduções"
+  },
+  "reports": {
+    "title": "Relatórios de Progresso",
+    "subtitle": "Acompanhe a evolução das trilhas por empresa, perfil de parceiro e usuário."
+  },
+  "translations": {
+    "title": "Traduções do Sistema",
+    "subtitle": "Gerencie os textos exibidos no LMS em múltiplos idiomas.",
+    "addKey": "Adicionar chave",
+    "key": "Chave",
+    "value": "Valor",
+    "save": "Salvar",
+    "revert": "Reverter",
+    "delete": "Excluir",
+    "actions": "Ações",
+    "searchPlaceholder": "Buscar por chave ou valor...",
+    "loading": "Carregando...",
+    "empty": "Nenhuma tradução encontrada.",
+    "newKey": "Nova chave",
+    "newValue": "Novo valor"
+  },
+  "resources": {
+    "sourceLabel": "Fonte do recurso",
+    "externalLink": "Link externo (download)",
+    "localUpload": "Upload local",
+    "chooseFile": "Selecionar arquivo",
+    "noFile": "Nenhum arquivo selecionado",
+    "selectedFile": "Arquivo selecionado: {name}",
+    "uploadHint": "Arquivo pronto para ser carregado. Salve o Tópico antes de continuar.",
+    "uploadPlaceholder": "Link gerado pelo upload"
+  }
+}

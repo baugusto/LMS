@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botmaker Academy - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #111820;
+            --bg-tertiary: #161f2a;
+
+            --accent-primary: #3b82f6;
+            --accent-secondary: #60a5fa;
+
+            --accent-02: rgba(59, 130, 246, 0.02);
+            --accent-03: rgba(59, 130, 246, 0.03);
+            --accent-05: rgba(59, 130, 246, 0.05);
+            --accent-08: rgba(59, 130, 246, 0.08);
+            --accent-10: rgba(59, 130, 246, 0.1);
+            --accent-12: rgba(59, 130, 246, 0.12);
+            --accent-15: rgba(59, 130, 246, 0.15);
+            --accent-20: rgba(59, 130, 246, 0.2);
+            --accent-35: rgba(59, 130, 246, 0.35);
+            --accent-40: rgba(59, 130, 246, 0.4);
+
+            --border-color: var(--accent-12);
+            --border-glow: rgba(59, 130, 246, 0.3);
+            --accent-glow: rgba(59, 130, 246, 0.25);
+
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+
+            --success-15: rgba(34, 197, 94, 0.15);
+            --warning-15: rgba(245, 158, 11, 0.15);
+            --danger-15: rgba(239, 68, 68, 0.15);
+            --muted-15: rgba(100, 116, 139, 0.15);
+
+            --white: #ffffff;
+            --white-05: rgba(255, 255, 255, 0.05);
+            --white-20: rgba(255, 255, 255, 0.2);
+
+            --shadow-30: rgba(0, 0, 0, 0.3);
+            --shadow-40: rgba(0, 0, 0, 0.4);
+            --shadow-50: rgba(0, 0, 0, 0.5);
+
+            --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --gradient-card: linear-gradient(145deg, rgba(17, 24, 32, 0.95) 0%, rgba(10, 14, 20, 0.98) 100%);
+            --gradient-accent-soft: linear-gradient(145deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%);
+            --gradient-accent-weak: linear-gradient(145deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+            --gradient-brand-panel: linear-gradient(145deg, rgba(59, 130, 246, 0.1) 0%, rgba(10, 14, 20, 0.95) 100%);
+            --gradient-shine: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            color: var(--text-primary);
+        }
+
+        /* Background Effects */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse 80% 50% at 20% 40%, var(--accent-12) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 60%, var(--accent-08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(var(--accent-02) 1px, transparent 1px),
+                linear-gradient(90deg, var(--accent-02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        /* Login Container */
+        .login-container {
+            display: flex;
+            width: 1000px;
+            height: 600px;
+            background: var(--gradient-card);
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            box-shadow: 
+                0 24px 48px -12px var(--shadow-50),
+                0 0 0 1px var(--accent-10),
+                inset 0 1px 0 var(--white-05);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(20px);
+        }
+
+        /* Left Panel - Branding */
+        .brand-panel {
+            flex: 1;
+            background: var(--gradient-brand-panel);
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 70%, var(--accent-15) 0%, transparent 40%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--gradient-blue);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 12px 32px var(--accent-40);
+        }
+
+        .logo-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: var(--white);
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .brand-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+            margin-bottom: 16px;
+            letter-spacing: -0.03em;
+        }
+
+        .brand-title span {
+            background: var(--gradient-blue);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .brand-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 360px;
+        }
+
+        /* 3D Illustration Placeholder */
+        .illustration {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle at 30% 30%, var(--border-glow) 0%, var(--accent-10) 50%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(40px);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* Right Panel - Form */
+        .form-panel {
+            flex: 1;
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header {
+            margin-bottom: 32px;
+        }
+
+        .form-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+            background: var(--bg-tertiary);
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox.checked {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .checkbox-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .forgot-link {
+            font-size: 13px;
+            color: var(--accent-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .forgot-link:hover {
+            color: var(--accent-primary);
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: var(--gradient-blue);
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px var(--border-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-shine);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px var(--accent-40);
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            gap: 16px;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .divider-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .signup-link {
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .signup-link a {
+            color: var(--accent-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .signup-link a:hover {
+            color: var(--accent-primary);
+        }
+
+        /* Footer Links */
+        .footer-links {
+            margin-top: 32px;
+            text-align: center;
+        }
+
+        .footer-links a {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin: 0 12px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="login-container">
+        <!-- Left Panel -->
+        <div class="brand-panel">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <span class="logo-text">Botmaker Academy</span>
+            </div>
+
+            <div class="brand-content">
+                <h1 class="brand-title">
+                    Bem-vindo ao<br>
+                    <span>Botmaker Academy</span>
+                </h1>
+                <p class="brand-subtitle">
+                    Acesse trilhas de aprendizado exclusivas, materiais de parceiros e recursos para impulsionar seu conhecimento.
+                </p>
+            </div>
+
+            <div class="illustration"></div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="form-panel">
+            <div class="form-header">
+                <h2 class="form-title">Faça login na sua conta</h2>
+                <p class="form-subtitle">Entre com suas credenciais para continuar</p>
+            </div>
+
+            <form>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" placeholder="seu@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Senha</label>
+                    <input type="password" class="form-input" placeholder="••••••••">
+                </div>
+
+                <div class="form-row">
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox checked">
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M10 3L4.5 8.5L2 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <span class="checkbox-label">Lembrar-me neste dispositivo</span>
+                    </div>
+                    <a href="#" class="forgot-link">Esqueceu sua senha?</a>
+                </div>
+
+                <button type="submit" class="btn-primary btn-block">Entrar</button>
+
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <span class="divider-text">ou</span>
+                    <div class="divider-line"></div>
+                </div>
+
+                <p class="signup-link">
+                    Não tem uma conta? <a href="#">Cadastre-se</a>
+                </p>
+            </form>
+
+            <div class="footer-links">
+                <a href="#">Privacidade</a>
+                <a href="#">Termos</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

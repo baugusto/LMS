@@ -1,0 +1,12 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+.git
+.github
+.next
+.postgres-data
+coverage
+node_modules
+npm-debug.log*
+storage

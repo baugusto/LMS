@@ -1,0 +1,95 @@
+version: "3.8"
+
+services:
+  lms:
+    image: "${IMAGE}:${TAG}"
+    networks:
+      - networks_swarm_public
+      - lms-internal
+    environment:
+      NODE_ENV: "${NODE_ENV:-production}"
+      PORT: "${PORT:-3000}"
+      APP_URL: "${APP_URL}"
+      APP_ENV: "${APP_ENV}"
+      DATABASE_URL: "${DATABASE_URL}"
+      BETTER_AUTH_SECRET: "${BETTER_AUTH_SECRET}"
+      GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID}"
+      GOOGLE_CLIENT_SECRET: "${GOOGLE_CLIENT_SECRET}"
+    deploy:
+      mode: replicated
+      placement:
+        constraints:
+          - node.role == manager
+      replicas: 1
+      update_config:
+        order: start-first
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: any
+      resources:
+        limits:
+          memory: 4096M
+          cpus: "2"
+        reservations:
+          memory: 512M
+          cpus: "0.5"
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.lms.rule=Host(`${DOMAIN}`)"
+        - "traefik.http.routers.lms.entrypoints=websecure"
+        - "traefik.http.routers.lms.tls=true"
+        - "traefik.http.routers.lms.tls.certresolver=${TRAEFIK_CERTRESOLVER}"
+        - "traefik.http.services.lms.loadbalancer.server.port=3000"
+        - "traefik.http.routers.lms.middlewares=lms-gzip,lms-headers"
+        - "traefik.http.middlewares.lms-gzip.compress=true"
+        - "traefik.http.middlewares.lms-headers.headers.frameDeny=true"
+        - "traefik.http.middlewares.lms-headers.headers.contentTypeNosniff=true"
+        - "traefik.http.middlewares.lms-headers.headers.referrerPolicy=no-referrer"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- http://localhost:3000/health > /dev/null 2>&1 || exit 1",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  postgres_lms:
+    image: "postgres:16-alpine"
+    networks:
+      - lms-internal
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    volumes:
+      - lms-postgres-data:/var/lib/postgresql/data
+    deploy:
+      mode: replicated
+      placement:
+        constraints:
+          - node.role == manager
+      replicas: 1
+      restart_policy:
+        condition: any
+      resources:
+        limits:
+          memory: 1024M
+          cpus: "1"
+        reservations:
+          memory: 512M
+          cpus: "0.5"
+
+networks:
+  networks_swarm_public:
+    external: true
+    name: "${TRAEFIK_PUBLIC_NETWORK:-networks_swarm_public}"
+  lms-internal:
+    driver: overlay
+
+volumes:
+  lms-postgres-data:
+    driver: local
