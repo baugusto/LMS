@@ -29,7 +29,7 @@
     "@tiptap/extension-underline": "^2.6.6",
     "@tiptap/extension-youtube": "^2.6.6",
     "@tiptap/react": "^2.6.6",
-    "@tiptap/starter-kit": "^2.6.6",
+    "@tiptap/starter-kit": "^3.31.3",
     "@vidstack/react": "^1.10.2",
     "argon2": "^0.41.1",
     "axios": "^1.7.9",
