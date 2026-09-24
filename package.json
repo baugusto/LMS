@@ -26,7 +26,7 @@
     "@tiptap/extension-image": "^2.6.6",
     "@tiptap/extension-link": "^2.6.6",
     "@tiptap/extension-text-align": "^2.6.6",
-    "@tiptap/extension-underline": "^2.6.6",
+    "@tiptap/extension-underline": "^3.31.3",
     "@tiptap/extension-youtube": "^2.6.6",
     "@tiptap/react": "^2.6.6",
     "@tiptap/starter-kit": "^2.6.6",
